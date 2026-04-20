@@ -13,52 +13,82 @@ import {
   Send,
   Camera,
   Code,
-  Phone
+  Phone,
+  Languages,
+  Menu,
+  X
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import profileImg from './assets/profile.jpg';
 import './App.css';
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen, toggleSidebar }) => {
   const [active, setActive] = useState('home');
+  const { t, i18n } = useTranslation();
+
+  const toggleLanguage = () => {
+    const newLang = i18n.language === 'en' ? 'bn' : 'en';
+    i18n.changeLanguage(newLang);
+  };
+
+  const handleLinkClick = (id) => {
+    setActive(id);
+    if (window.innerWidth <= 1024) {
+      toggleSidebar();
+    }
+  };
   
   return (
-    <nav className="sidebar">
+    <nav className={`sidebar ${isOpen ? 'open' : ''}`}>
       <div className="sidebar-logo">
         <Terminal size={28} />
         <span>ASRAFUL.</span>
+        {window.innerWidth <= 1024 && (
+          <button className="mobile-close" onClick={toggleSidebar}>
+            <X size={24} />
+          </button>
+        )}
       </div>
       <ul className="nav-links">
         <li className="nav-item">
-          <a href="#home" className={active === 'home' ? 'active' : ''} onClick={() => setActive('home')}>
-            <Home size={20} className="icon" /> Home
+          <a href="#home" className={active === 'home' ? 'active' : ''} onClick={() => handleLinkClick('home')}>
+            <Home size={20} className="icon" /> {t('nav.home')}
           </a>
         </li>
         <li className="nav-item">
-          <a href="#about" className={active === 'about' ? 'active' : ''} onClick={() => setActive('about')}>
-            <User size={20} className="icon" /> About
+          <a href="#about" className={active === 'about' ? 'active' : ''} onClick={() => handleLinkClick('about')}>
+            <User size={20} className="icon" /> {t('nav.about')}
           </a>
         </li>
         <li className="nav-item">
-          <a href="#services" className={active === 'services' ? 'active' : ''} onClick={() => setActive('services')}>
-            <Cpu size={20} className="icon" /> Services
+          <a href="#services" className={active === 'services' ? 'active' : ''} onClick={() => handleLinkClick('services')}>
+            <Cpu size={20} className="icon" /> {t('nav.services')}
           </a>
         </li>
         <li className="nav-item">
-          <a href="#portfolio" className={active === 'portfolio' ? 'active' : ''} onClick={() => setActive('portfolio')}>
-            <Layers size={20} className="icon" /> Portfolio
+          <a href="#portfolio" className={active === 'portfolio' ? 'active' : ''} onClick={() => handleLinkClick('portfolio')}>
+            <Layers size={20} className="icon" /> {t('nav.portfolio')}
           </a>
         </li>
         <li className="nav-item">
-          <a href="#contact" className={active === 'contact' ? 'active' : ''} onClick={() => setActive('contact')}>
-            <Mail size={20} className="icon" /> Contact
+          <a href="#contact" className={active === 'contact' ? 'active' : ''} onClick={() => handleLinkClick('contact')}>
+            <Mail size={20} className="icon" /> {t('nav.contact')}
           </a>
         </li>
       </ul>
+      <div className="lang-switcher">
+        <button className="lang-btn" onClick={toggleLanguage}>
+          <Languages size={18} />
+          {i18n.language === 'en' ? 'বাংলা' : 'English'}
+        </button>
+      </div>
     </nav>
   );
 };
 
-const Hero = () => (
+const Hero = () => {
+  const { t } = useTranslation();
+  return (
   <section id="home" className="hero-section">
       <div className="hero-content">
         <motion.div
@@ -67,20 +97,19 @@ const Hero = () => (
           transition={{ duration: 0.8 }}
           className="hero-text"
         >
-          <span className="hero-subtitle">Software Developer & Designer</span>
+          <span className="hero-subtitle">{t('hero.subtitle')}</span>
           <h1 className="hero-title">
-            <span style={{ color: 'var(--primary)' }}>MD ASRAFUL ISLAM</span>
+            <span style={{ color: 'var(--primary)' }}>{t('hero.title')}</span>
           </h1>
           <p className="hero-description" style={{ fontSize: '1.4rem', fontWeight: '500', color: 'var(--text-primary)', marginBottom: '10px' }}>
-            Building the Future with Code and Design.
+            {t('hero.tagline')}
           </p>
           <p className="hero-description" style={{ marginBottom: '2.5rem' }}>
-            Studying at <strong>Satkhira Government Polytechnic Institute</strong>. 
-            Dedicated to creating immersive digital experiences that combine functionality with stunning aesthetics.
+            {t('hero.description')}
           </p>
           <div className="cta-group">
-            <a href="#portfolio" className="btn btn-primary">View My Work</a>
-            <a href="#contact" className="btn btn-outline">Let's Talk</a>
+            <a href="#portfolio" className="btn btn-primary">{t('hero.viewWork')}</a>
+            <a href="#contact" className="btn btn-outline">{t('hero.letsTalk')}</a>
           </div>
         </motion.div>
         <motion.div
@@ -94,38 +123,43 @@ const Hero = () => (
       </div>
   </section>
 );
+};
 
-const Services = () => (
+const Services = () => {
+  const { t } = useTranslation();
+  return (
   <section id="services">
-    <h2 className="section-title">My Services</h2>
+    <h2 className="section-title">{t('services.title')}</h2>
     <div className="grid">
       <motion.div className="glass-card card" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
         <div className="card-icon"><Globe /></div>
-        <h3 className="card-title">Web Development</h3>
-        <p className="card-text">Crafting responsive, high-performance websites using the latest technologies like React and Vite.</p>
+        <h3 className="card-title">{t('services.webDev.title')}</h3>
+        <p className="card-text">{t('services.webDev.desc')}</p>
       </motion.div>
       <motion.div className="glass-card card" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}>
         <div className="card-icon"><Layers /></div>
-        <h3 className="card-title">UI/UX Design</h3>
-        <p className="card-text">Designing intuitive and visually striking user interfaces with a focus on modern aesthetics.</p>
+        <h3 className="card-title">{t('services.uiux.title')}</h3>
+        <p className="card-text">{t('services.uiux.desc')}</p>
       </motion.div>
       <motion.div className="glass-card card" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}>
         <div className="card-icon"><Database /></div>
-        <h3 className="card-title">Backend Systems</h3>
-        <p className="card-text">Building robust and scalable server-side architectures to power complex applications.</p>
+        <h3 className="card-title">{t('services.backend.title')}</h3>
+        <p className="card-text">{t('services.backend.desc')}</p>
       </motion.div>
     </div>
   </section>
 );
+};
 
-const Footer = () => (
+const Footer = () => {
+  const { t } = useTranslation();
+  return (
   <footer className="footer-main">
     <div className="footer-grid">
       <div className="footer-brand">
         <div className="footer-logo">ASRAFUL.</div>
         <p className="footer-bio">
-          Innovating through code, designing with passion.
-          Building modern digital solutions for the next generation.
+          {t('footer.bio')}
         </p>
         <div className="social-links" style={{ justifyContent: 'flex-start' }}>
           <a href="mailto:asrafulislamai8932454@gmail.com" className="social-link"><Mail size={18} /></a>
@@ -136,55 +170,60 @@ const Footer = () => (
       </div>
       
       <div className="footer-nav">
-        <h4>Quick Links</h4>
+        <h4>{t('footer.quickLinks')}</h4>
         <ul>
-          <li><a href="#home">Home</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#portfolio">Portfolio</a></li>
+          <li><a href="#home">{t('nav.home')}</a></li>
+          <li><a href="#about">{t('nav.about')}</a></li>
+          <li><a href="#services">{t('nav.services')}</a></li>
+          <li><a href="#portfolio">{t('nav.portfolio')}</a></li>
         </ul>
       </div>
 
       <div className="footer-contact">
-        <h4>Get In Touch</h4>
+        <h4>{t('footer.contact')}</h4>
         <p>Gmail: asrafulislamai8932454@gmail.com</p>
         <p>Mobile: 01341765381</p>
-        <p>Satkhira, Bangladesh</p>
+        <p>{t('footer.location')}</p>
       </div>
     </div>
     
     <div className="footer-bottom">
       <p className="copyright">
-        &copy; {new Date().getFullYear()} MD Asraful Islam. All rights reserved.
+        &copy; {new Date().getFullYear()} MD Asraful Islam. {t('footer.rights')}
       </p>
     </div>
   </footer>
 );
+};
 
 function App() {
+  const { t } = useTranslation();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+
   return (
     <>
-      <Sidebar />
-      <main>
+      <button className="mobile-toggle" onClick={toggleSidebar}>
+        {isSidebarOpen ? <X /> : <Menu />}
+      </button>
+      <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+      <main onClick={() => isSidebarOpen && setIsSidebarOpen(false)}>
         <Hero />
         <Services />
         <section id="about">
-          <h2 className="section-title">About Me</h2>
+          <h2 className="section-title">{t('about.title')}</h2>
           <div className="glass-card card" style={{ maxWidth: '800px' }}>
             <p className="card-text">
-              I am a dedicated software developer with a keen eye for detail and a passion for 
-              innovation. My journey in technology is driven by a desire to solve complex 
-              problems and create meaningful impact through digital solutions. Whether it's 
-              a simple landing page or a complex web application, I bring 100% commitment 
-              to every project.
+              {t('about.text')}
             </p>
           </div>
         </section>
         <section id="contact">
-          <h2 className="section-title">Get In Touch</h2>
+          <h2 className="section-title">{t('contact.title')}</h2>
           <div className="grid">
             <div className="glass-card card">
-              <h3 className="card-title">Contact Information</h3>
+              <h3 className="card-title">{t('contact.infoTitle')}</h3>
               <div className="card-text" style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <Mail size={20} color="var(--primary)" />
@@ -196,7 +235,7 @@ function App() {
                 </div>
               </div>
               <div style={{ marginTop: '2rem' }}>
-                <a href="mailto:asrafulislamai8932454@gmail.com" className="btn btn-primary">Send an Email</a>
+                <a href="mailto:asrafulislamai8932454@gmail.com" className="btn btn-primary">{t('contact.sendEmail')}</a>
               </div>
             </div>
           </div>
