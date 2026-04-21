@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import profileImg from './assets/profile.jpg';
+import team24Logo from './assets/team24_logo.png';
 import './App.css';
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
@@ -41,8 +42,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   return (
     <nav className={`sidebar ${isOpen ? 'open' : ''}`}>
       <div className="sidebar-logo">
-        <Terminal size={28} />
-        <span>ASRAFUL.</span>
+        <img src={team24Logo} alt="Team24 Logo" className="nav-logo-img" />
         {window.innerWidth <= 1024 && (
           <button className="mobile-close" onClick={toggleSidebar}>
             <X size={24} />
@@ -157,7 +157,9 @@ const Footer = () => {
   <footer className="footer-main">
     <div className="footer-grid">
       <div className="footer-brand">
-        <div className="footer-logo">ASRAFUL.</div>
+        <div className="footer-logo">
+          <img src={team24Logo} alt="Team24 Logo" className="footer-logo-img" />
+        </div>
         <p className="footer-bio">
           {t('footer.bio')}
         </p>
